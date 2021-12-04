@@ -1,5 +1,6 @@
 import java.io.EOFException;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class EncryptFileRSA {
@@ -51,15 +52,16 @@ public class EncryptFileRSA {
      * Encrypt the given file by RSA encryption and store the encryption in the output file
      * with the same location with same input file name with '.rsa' extension
      */
-    public void encrypt() {
+    public void encrypt() throws IOException {
         long largestBlockSize = getLargestBlockSize();
         int numberOfCharacter = String.valueOf(largestBlockSize).length() / 3;
         String block = "";
-        boolean flag = true; // just for testing
-        while (flag /*Todo: filesDeal.hasBlock(numberOfCharacter)*/) {
-            // Todo: block = filesDeal.getBlock(numberOfCharacter);
+
+        while (filesDeal.hasBlock(numberOfCharacter)) {
+            block = filesDeal.getBlock(numberOfCharacter);
             String encryptedBlock = encryptBlock(block);
-            // Todo: filesDeal.writeBlock(encryptedBlock);
+            filesDeal.writeBlock(encryptedBlock);
+            numberOfCharacter+=numberOfCharacter;
         }
         // In case there is a block with size less than "numberOfCharacter"
         /*Todo: block = filesDeal.getAll(); */ // filesDeal.getAll() returns all the remainder characters
