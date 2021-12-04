@@ -1,12 +1,13 @@
 import java.io.EOFException;
 import java.io.File;
+import java.io.IOException;
 
 public class EncryptFileRSA {
     private FilesDeal filesDeal;
     private long n;
     private long e;
 
-    public EncryptFileRSA(String filePath) {
+    public EncryptFileRSA(String filePath) throws IOException{
         filesDeal = new FilesDeal(filePath);
         readKey();
     }
@@ -14,9 +15,9 @@ public class EncryptFileRSA {
     /**
      * Get the value of n, e attributes from the first line of the file
      */
-    private void readKey() {
+    private void readKey() throws IOException {
         String publicKey = "6141467345030015629 1227727"; // public key will be read from file
-        // Todo: publicKey = filesDeal.getFirstLine()
+        publicKey = filesDeal.getFirstLine();
         String[] tmp = publicKey.split(" ");
         n = Long.parseLong(tmp[0]);
         e = Long.parseLong(tmp[1]);

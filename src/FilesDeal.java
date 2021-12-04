@@ -37,4 +37,11 @@ public class FilesDeal {
         fileOutputStream.close();
     }
 
+
+    public String getFirstLine() throws IOException{
+        FileInputStream fileInputStream = new FileInputStream(this.filePath);
+        Scanner scanner = new Scanner(fileInputStream);
+        return scanner.nextLine();
+    }
+
 }
