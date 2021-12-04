@@ -2,14 +2,9 @@ import java.io.File;
 import java.io.IOException;
 
 public class Test {
-    public static void main(String[] args) {
-      //  EncryptFileRSA fileRSA = new EncryptFileRSA(new File("input.txt"));
-      //  fileRSA.encrypt();
-
-        long n = 0;
-        long d = 0;
-        DecryptFileRSA.decrypt(new File("input.rsa"), n, d);
-
-
+    public static void main(String[] args) throws IOException {
+        FilesDeal filesDeal = new FilesDeal("try.txt");
+        System.out.println(filesDeal.hasBlock(2));
+        System.out.println(filesDeal.getBlock());
     }
 }
