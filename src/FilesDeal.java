@@ -12,7 +12,7 @@ public class FilesDeal {
     }
 
 
-    private void readFile(int numChar) throws IOException, EOFException {
+    private void readFile(int numChar) throws IOException {
 //        FileInputStream fileInputStream = new FileInputStream(filePath);
 //        byte[] a =fileInputStream.readNBytes(numChar);
 //        block = new String(a, StandardCharsets.UTF_8);
@@ -52,7 +52,6 @@ public class FilesDeal {
         printWriter.close();
         fileOutputStream.close();
     }
-
 
     public String getFirstLine() throws IOException {
         FileInputStream fileInputStream = new FileInputStream(this.filePath);

@@ -6,5 +6,9 @@ public class Test {
         FilesDeal filesDeal = new FilesDeal("try.txt");
         System.out.println(filesDeal.hasBlock(2));
         System.out.println(filesDeal.getBlock());
+
+        File file = new File("input.txt");
+
+        DecryptFileRSA.decrypt(file,2537,937);
     }
 }
