@@ -1,6 +1,3 @@
-import java.io.EOFException;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class EncryptFileRSA {
@@ -8,7 +5,7 @@ public class EncryptFileRSA {
     private long n;
     private long e;
 
-    public EncryptFileRSA(String filePath) throws IOException{
+    public EncryptFileRSA(String filePath) throws IOException {
         filesDeal = new FilesDeal(filePath);
         readKey();
     }
@@ -16,9 +13,8 @@ public class EncryptFileRSA {
     /**
      * Get the value of n, e attributes from the first line of the file
      */
-    private void readKey() throws IOException {
-        String publicKey = "6141467345030015629 1227727"; // public key will be read from file
-        publicKey = filesDeal.getFirstLine();
+    private void readKey() {
+        String publicKey = filesDeal.getFirstLine();
         String[] tmp = publicKey.split(" ");
         n = Long.parseLong(tmp[0]);
         e = Long.parseLong(tmp[1]);
@@ -27,21 +23,24 @@ public class EncryptFileRSA {
 
     private long getLargestBlockSize() {
         // The largest character in ascii is '}' = 125
-        StringBuilder block = new StringBuilder("125");
-        long blockSize = Long.parseLong(block.toString());
-        while (blockSize < n)
+        int lenOfN = String.valueOf(n).length() - 2;
+        StringBuilder block = new StringBuilder("");
+        long blockSize = 0;
+        while (blockSize < n && block.length() < lenOfN) {
             block.append("125");
+            blockSize = Long.parseLong(block.toString());
+        }
         return blockSize;
     }
 
     private String letterToDecimal(char letter) {
-        int value = (int)letter;
-        return String.format("%03d",value); // add leading zeros
+        int value = (int) letter;
+        return String.format("%03d", value); // add leading zeros
     }
 
     private String encryptBlock(String block) {
         StringBuilder nBlock = new StringBuilder();
-        for(char c :block.toCharArray()) nBlock.append(letterToDecimal(c));
+        for (char c : block.toCharArray()) nBlock.append(letterToDecimal(c));
         long blockValue = Long.parseLong(nBlock.toString());
         long result = Math.floorMod(
                 Double.doubleToLongBits(Math.pow(blockValue, e)), n);
@@ -60,15 +59,15 @@ public class EncryptFileRSA {
         while (filesDeal.hasBlock(numberOfCharacter)) {
             block = filesDeal.getBlock(numberOfCharacter);
             String encryptedBlock = encryptBlock(block);
-            filesDeal.writeBlock(encryptedBlock);
-            numberOfCharacter+=numberOfCharacter;
+            filesDeal.writeRSABlock(encryptedBlock);
+            numberOfCharacter += numberOfCharacter;
         }
         // In case there is a block with size less than "numberOfCharacter"
-        /*Todo: block = filesDeal.getAll(); */ // filesDeal.getAll() returns all the remainder characters
+        block = filesDeal.getReadingBlock();
         String encryptedBlock = encryptBlock(block);
-        // Todo: filesDeal.writeBlock(encryptedBlock);
-        /* Todo: filesDeal.saveEncryptedFile(encryptedBlock);*/ // save and close encrypted file
-        /* Todo: filesDeal.closeTextFile();*/ // close input file
+        filesDeal.writeRSABlock(encryptedBlock);
+        filesDeal.closeWriting();
+        filesDeal.closeReading();
 
     }
 

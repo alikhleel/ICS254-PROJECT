@@ -1,62 +1,43 @@
 import java.io.*;
-import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
 public class FilesDeal {
     private String filePath;
-    private long pointer;
-    private String block;
+    private int readingPointer;
+    private FileOutputStream fileOutputStream;
+    private FileInputStream fileInputStream;
+    private String readingBlock;
 
-    public FilesDeal(String filePath) {
+    public FilesDeal(String filePath) throws FileNotFoundException {
         this.filePath = filePath;
+        fileInputStream = new FileInputStream(this.filePath);
     }
 
 
-    private void readFile(int numChar) throws IOException {
-//        FileInputStream fileInputStream = new FileInputStream(filePath);
-//        byte[] a =fileInputStream.readNBytes(numChar);
-//        block = new String(a, StandardCharsets.UTF_8);
+    private void readFile(int numChar) throws IOException,EOFException {
+        /*byte[] block = new byte[numChar];
+        fileInputStream.readNBytes(block,readingPointer,numChar);
+        readingBlock = new String(block);
+        readingPointer += numChar;
+         */
 
         byte[] magic = new byte[numChar];
         RandomAccessFile raf = new RandomAccessFile(filePath, "r");
-        raf.seek(pointer);
-        raf.readFully(magic);
-        pointer += numChar;
-        block = new String(magic);
-        if (block.length() < numChar) throw new EOFException("Error: end of file");
+        raf.seek(readingPointer);
+        raf.read(magic);
+        readingPointer += numChar;
+        readingBlock = new String(magic);
 
-/*
-        FileInputStream fileInputStream = new FileInputStream(this.filePath);
+        if (readingBlock.trim().length() < numChar) throw new EOFException("Error: end of file");
+
+    }
+
+
+    public String getFirstLine() {
         Scanner scanner = new Scanner(fileInputStream);
-
-
-        while (scanner.hasNext()){
-
-            System.out.println(scanner.nextLine());
-        }
-
-        scanner.close();
-        fileInputStream.close();
-*/
-    }
-
-    public String getBlock() {
-        return block;
-    }
-
-    public void writeBlock(String s) throws IOException {
-        FileOutputStream fileOutputStream = new FileOutputStream("output.rsa");
-        PrintWriter printWriter = new PrintWriter(fileOutputStream);
-
-        printWriter.print(s);
-        printWriter.close();
-        fileOutputStream.close();
-    }
-
-    public String getFirstLine() throws IOException {
-        FileInputStream fileInputStream = new FileInputStream(this.filePath);
-        Scanner scanner = new Scanner(fileInputStream);
-        return scanner.nextLine();
+        String line = scanner.nextLine();
+        readingPointer += (line.length() + 2);
+        return line;
     }
 
     public boolean hasBlock(int numChar) throws IOException {
@@ -70,12 +51,48 @@ public class FilesDeal {
     }
 
     public String getBlock(int charNumber) throws IOException {
-        if (block.isEmpty() || block.isBlank()) {
+        if (readingBlock.isEmpty() || readingBlock.isBlank()) {
             readFile(charNumber);
         }
-        String tmp = block;
-        block = "";
+        String tmp = readingBlock;
+        readingBlock = "";
         return tmp;
     }
 
+    public String getReadingBlock() {
+        String tmp = readingBlock;
+        readingBlock = "";
+        return tmp;
+    }
+
+    private void writeBlock(String block) {
+        PrintWriter printWriter = new PrintWriter(fileOutputStream);
+        printWriter.print(block);
+        printWriter.close();
+    }
+
+    public void writeRSABlock(String block) throws IOException {
+        if (fileOutputStream == null) createRSAFile();
+        writeBlock(block);
+    }
+
+    public void closeWriting() throws IOException {
+        fileOutputStream.close();
+    }
+
+    public void closeReading() throws IOException {
+        fileInputStream.close();
+        readingPointer = 0;
+        readingBlock = "";
+    }
+
+    private void createRSAFile() throws FileNotFoundException {
+        String outputPath = filePath.replaceFirst("(\\w+)$", "rsa");
+        fileOutputStream = new FileOutputStream(outputPath, false);
+    }
+
+    private void createDECFile() throws FileNotFoundException {
+        String outputPath = filePath.replaceFirst("(\\w+)$", "dec");
+        fileOutputStream = new FileOutputStream(outputPath, false);
+    }
 }
