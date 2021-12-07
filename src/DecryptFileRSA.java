@@ -39,23 +39,20 @@ public class DecryptFileRSA {
      */
     public static void decrypt(File input, long n, long d) throws IOException {
         Scanner scanner = new Scanner(input);
-        FileOutputStream fileOutputStream = new FileOutputStream("decrypted.dec");
-        PrintWriter printWriter = new PrintWriter(fileOutputStream);
 
 
         long block;
         long dec;
         String s="";
+        char l;
         while (scanner.hasNext()){
             block = scanner.nextLong();
             System.out.println(block);
             dec =exponentMod((int)block,(int)d,(int)n);
-            System.out.println(dec);
-            s +=dec;
+
+
         }
 
-        printWriter.print(s);
-        printWriter.close();
 
     }
 }
