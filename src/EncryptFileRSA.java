@@ -57,7 +57,6 @@ public class EncryptFileRSA {
             block = filesDeal.getBlock(numberOfCharacter);
             String encryptedBlock = encryptBlock(block);
             filesDeal.writeRSABlock(encryptedBlock);
-            numberOfCharacter += numberOfCharacter;
         }
         // In case there is a block with size less than "numberOfCharacter"
         block = filesDeal.getBlock();

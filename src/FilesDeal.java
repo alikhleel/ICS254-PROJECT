@@ -5,7 +5,7 @@ public class FilesDeal {
     private final String FILE_PATH;
     private RandomAccessFile randomAccessFile;
     private int readingPointer;
-    private FileOutputStream fileOutputStream;
+    private PrintWriter printWriter;
     private String readingBlock;
 
     public FilesDeal(String filePath) throws FileNotFoundException {
@@ -20,14 +20,14 @@ public class FilesDeal {
         randomAccessFile.read(block);
         readingPointer += numChar;
         readingBlock = new String(block);
-        if (readingBlock.trim().length() < numChar) throw new EOFException("Error: end of file");
+        if (block[numChar-1] == 0) throw new EOFException("Error: end of file");
     }
 
 
     public String getFirstLine() throws FileNotFoundException {
         Scanner scanner = new Scanner(new File(this.FILE_PATH));
         String line = scanner.nextLine();
-        readingPointer += (line.length() + 2);
+        readingPointer += (line.length() + 1);
         return line;
     }
 
@@ -63,32 +63,32 @@ public class FilesDeal {
     }
 
     private void writeBlock(String block) {
-        PrintWriter printWriter = new PrintWriter(fileOutputStream);
         printWriter.print(block);
-        printWriter.close();
     }
 
     public void writeRSABlock(String block) throws IOException {
-        if (fileOutputStream == null) createRSAFile();
-        writeBlock(block);
+        if (printWriter == null) createRSAFile();
+        writeBlock(block+" ");
     }
 
     public void writeDECBlock(String block) throws IOException {
-        if (fileOutputStream == null) createDECFile();
+        if (printWriter == null) createDECFile();
         writeBlock(block);
     }
 
     public void closeWriting() throws IOException {
-        fileOutputStream.close();
+        printWriter.close();
     }
 
-    private void createRSAFile() throws FileNotFoundException {
+    private void createRSAFile() throws IOException {
         String outputPath = FILE_PATH.replaceFirst("(\\w+)$", "rsa");
-        fileOutputStream = new FileOutputStream(outputPath, false);
+        new File(outputPath).delete();
+        printWriter = new PrintWriter(new FileOutputStream(outputPath, true));
     }
 
-    private void createDECFile() throws FileNotFoundException {
+    private void createDECFile() throws IOException {
         String outputPath = FILE_PATH.replaceFirst("(\\w+)$", "dec");
-        fileOutputStream = new FileOutputStream(outputPath, false);
+        new File(outputPath).delete();
+        printWriter = new PrintWriter(new FileOutputStream(outputPath, true));
     }
 }

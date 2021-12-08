@@ -3,11 +3,12 @@ import java.io.IOException;
 
 public class Test {
     public static void main(String[] args) throws IOException {
-        EncryptFileRSA encryptFileRSA = new EncryptFileRSA("try.txt");
+        String basePath = "D:\\ali-kh\\Downloads\\";
+        EncryptFileRSA encryptFileRSA = new EncryptFileRSA(basePath + "sample3.txt");
         encryptFileRSA.encrypt();
-      // test decryption
-        DecryptFileRSA decryptFileRSA = new DecryptFileRSA("try.dec");
-        decryptFileRSA.decrypt(new File("try.rsa"),
+        // test decryption
+        DecryptFileRSA decryptFileRSA = new DecryptFileRSA(basePath + "sample3.rsa");
+        decryptFileRSA.decrypt(
                 6141467345030015629L, 155341640901324583L);
     }
 }

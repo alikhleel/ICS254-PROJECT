@@ -23,8 +23,8 @@ public class DecryptFileRSA {
      * Decrypt the input file and store the decryption in the same location with same
      * name with extension '.dec'
      */
-    public void decrypt(File input, long n, long d) throws IOException {
-        Scanner scanner = new Scanner(input);
+    public void decrypt(long n, long d) throws IOException {
+        Scanner scanner = new Scanner(new File(FILE_PATH));
         FilesDeal filesDeal = new FilesDeal(FILE_PATH);
 
         while (scanner.hasNext()) {
@@ -33,7 +33,5 @@ public class DecryptFileRSA {
             filesDeal.writeDECBlock(decryptBlock(dec));
         }
         filesDeal.closeWriting();
-
-
     }
 }
