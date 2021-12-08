@@ -1,3 +1,4 @@
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class EncryptFileRSA {
@@ -13,7 +14,7 @@ public class EncryptFileRSA {
     /**
      * Get the value of n, e attributes from the first line of the file
      */
-    private void readKey() {
+    private void readKey() throws FileNotFoundException {
         String publicKey = filesDeal.getFirstLine();
         String[] tmp = publicKey.split(" ");
         n = Long.parseLong(tmp[0]);
@@ -33,17 +34,13 @@ public class EncryptFileRSA {
         return blockSize;
     }
 
-    private String letterToDecimal(char letter) {
-        int value = (int) letter;
-        return String.format("%03d", value); // add leading zeros
-    }
+
 
     private String encryptBlock(String block) {
         StringBuilder nBlock = new StringBuilder();
-        for (char c : block.toCharArray()) nBlock.append(letterToDecimal(c));
+        for (char c : block.toCharArray()) nBlock.append(Helper.letterToDecimal(c));
         long blockValue = Long.parseLong(nBlock.toString());
-        long result = Math.floorMod(
-                Double.doubleToLongBits(Math.pow(blockValue, e)), n);
+        long result = Helper.exponentMod(blockValue, e, n);
         return String.valueOf(result);
     }
 
@@ -63,7 +60,7 @@ public class EncryptFileRSA {
             numberOfCharacter += numberOfCharacter;
         }
         // In case there is a block with size less than "numberOfCharacter"
-        block = filesDeal.getReadingBlock();
+        block = filesDeal.getBlock();
         String encryptedBlock = encryptBlock(block);
         filesDeal.writeRSABlock(encryptedBlock);
         filesDeal.closeWriting();
