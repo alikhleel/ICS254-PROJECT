@@ -8,7 +8,7 @@ public class FilesDeal {
     private PrintWriter printWriter;
     private String readingBlock;
 
-    public FilesDeal(String filePath) throws FileNotFoundException {
+    public FilesDeal(String filePath) {
         this.FILE_PATH = filePath;
     }
 
@@ -26,23 +26,27 @@ public class FilesDeal {
 
     public String getFirstLine() throws FileNotFoundException {
         Scanner scanner = new Scanner(new File(this.FILE_PATH));
-        String line = scanner.nextLine();
-        readingPointer += (line.length() + 1);
-        return line;
+        scanner.useDelimiter("\n");
+        String line = scanner.next();
+        readingPointer += line.length() + 1;
+
+        return line.trim();
     }
 
-    public boolean hasBlock(int numChar) throws IOException {
+    public boolean hasBlock(int numChar){
         boolean flag = true;
         try {
             readFile(numChar);
         } catch (EOFException e) {
             flag = false;
+        } catch (IOException e) {
+            e.printStackTrace();
         }
         return flag;
     }
 
     public String getBlock(int charNumber) throws IOException {
-        if (readingBlock.isEmpty() || readingBlock.isBlank()) {
+        if (readingBlock.equals("")) {
             readFile(charNumber);
         }
         String tmp = readingBlock;

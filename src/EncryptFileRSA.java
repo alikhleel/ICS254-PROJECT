@@ -12,14 +12,13 @@ public class EncryptFileRSA {
     }
 
     /**
-     * Get the value of n, e attributes from the first line of the file
+     * Get the value of e, n attributes from the first line of the file
      */
     private void readKey() throws FileNotFoundException {
         String publicKey = filesDeal.getFirstLine();
         String[] tmp = publicKey.split(" ");
-        n = Long.parseLong(tmp[0]);
-        e = Long.parseLong(tmp[1]);
-
+        e = Long.parseLong(tmp[0]);
+        n = Long.parseLong(tmp[1]);
     }
 
     private long getLargestBlockSize() {
