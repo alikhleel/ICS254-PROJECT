@@ -72,7 +72,7 @@ public class FilesDeal {
 
     public void writeRSABlock(String block) throws IOException {
         if (printWriter == null) createRSAFile();
-        writeBlock(block+" ");
+        writeBlock(block);
     }
 
     public void writeDECBlock(String block) throws IOException {
