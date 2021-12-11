@@ -1,14 +1,30 @@
 import java.io.File;
 import java.io.IOException;
+import java.util.Scanner;
 
 public class Test {
     public static void main(String[] args) throws IOException {
-        String basePath = "D:\\ali-kh\\Downloads\\";
-        EncryptFileRSA encryptFileRSA = new EncryptFileRSA(basePath + "sample3.txt");
+
+        long n,d;
+        String filePath;
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter the file path that you want to encrypt: ");
+        filePath = scanner.next();
+        EncryptFileRSA encryptFileRSA = new EncryptFileRSA(filePath);
         encryptFileRSA.encrypt();
-        // test decryption
-        DecryptFileRSA decryptFileRSA = new DecryptFileRSA(basePath + "sample3.rsa");
-        decryptFileRSA.decrypt(
-                6141467345030015629L, 155341640901324583L);
+
+
+        System.out.println("Enter the file name without any .txt\ni.e test.txt ==> test");
+        String file = scanner.next();
+
+        System.out.println("Enter the private key \"n and d \"");
+        n = scanner.nextLong();
+        d = scanner.nextLong();
+
+        DecryptFileRSA decryptFileRSA = new DecryptFileRSA(file + ".rsa");
+        decryptFileRSA.decrypt(n, d);
+
+        System.out.println("Alright We are good !");
+        System.out.println("You can check your file that is encrypted and the decrypted ");
     }
 }
