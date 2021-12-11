@@ -34,13 +34,12 @@ public class EncryptFileRSA {
     }
 
 
-
     private String encryptBlock(String block) {
         StringBuilder nBlock = new StringBuilder();
         for (char c : block.toCharArray()) nBlock.append(Helper.letterToDecimal(c));
         long blockValue = Long.parseLong(nBlock.toString());
         long result = Helper.exponentMod(blockValue, e, n);
-        return String.valueOf(result);
+        return String.format("%0" + String.valueOf(n).length() + "d", result);
     }
 
     /**
