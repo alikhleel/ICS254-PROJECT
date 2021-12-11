@@ -7,10 +7,10 @@ This is a program that encrypt any text file you want you want using RSA.
 When you run the program, you need to:
 
 1-	Enter the choice whether to encrypt or to decrypt.
-3- 	Enter file path if you chose encrypt.
-4-	Enter the file name .rsa if you chose to decrypt.
-5-	Enter the private key n and d.
-6-	You will find the encrypted and the decrypted file on the project file.
+2- 	Enter file path if you chose encrypt.
+3-	Enter the file name .rsa if you chose to decrypt.
+4-	Enter the private key n and d.
+5-	You will find the encrypted and the decrypted file on the project file.
 
 
 ########################## Keys ####################################################
