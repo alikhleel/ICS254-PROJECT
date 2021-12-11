@@ -13,11 +13,15 @@ public class Test {
         EncryptFileRSA encryptFileRSA = new EncryptFileRSA(filePath);
         encryptFileRSA.encrypt();
 
+
+        System.out.println("Enter the file name without any .txt\ni.e test.txt ==> test");
+        String file = scanner.next();
+
         System.out.println("Enter the private key \"n and d \"");
         n = scanner.nextLong();
         d = scanner.nextLong();
 
-        DecryptFileRSA decryptFileRSA = new DecryptFileRSA("sample3.rsa");
+        DecryptFileRSA decryptFileRSA = new DecryptFileRSA(file + ".rsa");
         decryptFileRSA.decrypt(n, d);
 
         System.out.println("Alright We are good !");
