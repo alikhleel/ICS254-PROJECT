@@ -28,7 +28,7 @@ public class Test {
     private static void decrypt() throws IOException {
         System.out.println("Enter the file path that you want to decrypt: ");
         String file = scanner.next();
-        System.out.println("Enter the private key \"n and d \"");
+        System.out.println("Enter the private key \" n and d \"");
         long n = scanner.nextLong();
         long d = scanner.nextLong();
 
