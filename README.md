@@ -1,7 +1,7 @@
 # ICS254-PROJECT
 RSA encryption algorithm for ICS254 term 211
 
-This is a program that encrypt any text file you want you want using RSA.
+This is a program that encrypt any text file you want you want using RSA with an ASCII coding for the text.
 
 ########################## Instructions ############################################
 When you run the program, you need to:
